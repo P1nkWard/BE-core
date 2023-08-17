@@ -1,0 +1,26 @@
+= REST Docs 문서 만들기 (글의 제목)
+backtony.github.io(부제)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[Member-API]]
+== Member API
+
+[[Member-회원가입]]
+=== Member-회원가입
+operation::members/register[snippets='http-request,path-parameters,http-response,response-fields']
+
+// include::{snippets}/members/register/curl-request.adoc[]
+// include::{snippets}/members/register/http-request.adoc[]
+//
+// include::{snippets}/members/register/http-response.adoc[]
+//
+// include::{snippets}/members/register/httpie-request.adoc[]
+//
+// include::{snippets}/members/register/request-body.adoc[]
+//
+// include::{snippets}/members/register/response-body.adoc[]
