@@ -1,19 +1,17 @@
 package com.example.core.controller;
 
 
+import com.example.core.document.config.RestDocsTestSupport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentationConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,12 +22,9 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@AutoConfigureRestDocs
-@AutoConfigureMockMvc
-@ExtendWith({MockitoExtension.class, RestDocumentationExtension.class})
 //@WebMvcTest
 //@SpringBootTest
-public class MemberControllerTest {
+public class RestDocsExampleTest extends RestDocsTestSupport {
     static class RequestRegisterMember {
         String id;
         String pw;
@@ -52,16 +47,6 @@ public class MemberControllerTest {
     }
 
     private static ObjectMapper objectMapper = new ObjectMapper();
-    private MockMvc mvc;
-
-    @BeforeEach
-    void setup(RestDocumentationContextProvider restDocumentation){
-        mvc = MockMvcBuilders
-                .standaloneSetup(MemberController.class)
-                .apply(documentationConfiguration(restDocumentation))
-                .build();
-    }
-
 
 
     @Test
@@ -76,13 +61,8 @@ public class MemberControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/register")
                         .content(requestJson))
-                .andExpect(status().isOk())
-                .andDo(
-                        document("members/register",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint())
-                        )
-                );
+                .andExpect(status().isOk());
+
 
     }
 }

@@ -1,0 +1,14 @@
+[[Example_adocfile]]
+=== Example adocfile
+
+.기본 snippets
+* http-request
+* path-parameters
+* http-response
+* response-fields
+
+필요한 snippets을 사용하면 됩니다.
+
+operation::rest-docs-example-test/member_register_test[snippets='http-request,path-parameters,http-response,response-fields']
+
+

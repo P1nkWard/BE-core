@@ -1,5 +1,4 @@
-= REST Docs 문서 만들기 (글의 제목)
-backtony.github.io(부제)
+= PinkWard Api명세
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -7,20 +6,14 @@ backtony.github.io(부제)
 :toclevels: 2
 :sectlinks:
 
-[[Member-API]]
-== Member API
+[[Example]]
+== Example
+* 사용하는 방법을 적어놓습니다.
 
-[[Member-회원가입]]
-=== Member-회원가입
-operation::members/register[snippets='http-request,path-parameters,http-response,response-fields']
+=, ==, === 은 각각 h1,h2,h3의 대응이 됩니다. +
+각 테스트 코드를 작성했고 `build` 를 돌렸다면 adocs 파일을 만들어서 include 시키면 됩니다.
 
-// include::{snippets}/members/register/curl-request.adoc[]
-// include::{snippets}/members/register/http-request.adoc[]
-//
-// include::{snippets}/members/register/http-response.adoc[]
-//
-// include::{snippets}/members/register/httpie-request.adoc[]
-//
-// include::{snippets}/members/register/request-body.adoc[]
-//
-// include::{snippets}/members/register/response-body.adoc[]
+adocs파일을 만드는 방법은 src/docs/asciidoc/example.adoc파일에 명세해뒀습니다.
+
+[source,http,options="nowrap",title="Request"]
+include::example.adoc[]
