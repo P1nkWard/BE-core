@@ -17,3 +17,4 @@ adocs파일을 만드는 방법은 src/docs/asciidoc/example.adoc파일에 명�
 
 [source,http,options="nowrap",title="Request"]
 include::example.adoc[]
+include::member.adoc[]
