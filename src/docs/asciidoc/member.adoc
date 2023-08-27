@@ -30,8 +30,3 @@ operation::member-controller-test/delete-member-test[snippets='http-request,http
 회원 조회
 
 operation::member-controller-test/check-member-test[snippets='http-request,http-response']
-
-=== Check Payment Details
-결제 내역 조회
-
-operation::member-controller-test/check-payment-details-test[snippets='http-request,http-response']

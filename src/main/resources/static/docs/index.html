@@ -452,6 +452,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#Example_adocfile">Example adocfile</a></li>
 </ul>
 </li>
+<li><a href="#Member">Member</a>
+<ul class="sectlevel2">
+<li><a href="#_find_member_id">Find Member Id</a></li>
+<li><a href="#_find_member_pw">Find Member Pw</a></li>
+<li><a href="#_register_member">Register Member</a></li>
+<li><a href="#_modify_member">Modify Member</a></li>
+<li><a href="#_delete_member">Delete Member</a></li>
+<li><a href="#_check_member">Check Member</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -500,7 +510,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /register HTTP/1.1
-Content-Length: 40
+Content-Length: 43
 Host: localhost:8080
 
 {
@@ -520,8 +530,10 @@ Host: localhost:8080
 <h4 id="Example_adocfile_http_response"><a class="link" href="#Example_adocfile_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Content-Language: en</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -534,11 +546,241 @@ Content-Language: en</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="Member"><a class="link" href="#Member">Member</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_find_member_id"><a class="link" href="#_find_member_id">Find Member Id</a></h3>
+<div class="paragraph">
+<p>회원 id 찾기</p>
+</div>
+<div class="sect3">
+<h4 id="_find_member_id_curl_request"><a class="link" href="#_find_member_id_curl_request">Curl request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/member/find-id' -i -X POST \
+    -d '{
+  "id" : null,
+  "pw" : null,
+  "name" : "myName",
+  "phone" : "010-0000-0000",
+  "address" : null
+}'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_find_member_id_http_request"><a class="link" href="#_find_member_id_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /member/find-id HTTP/1.1
+Content-Length: 108
+Host: localhost:8080
+
+{
+  "id" : null,
+  "pw" : null,
+  "name" : "myName",
+  "phone" : "010-0000-0000",
+  "address" : null
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_find_member_id_http_response"><a class="link" href="#_find_member_id_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 16
+
+찾은 아이디</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_find_member_pw"><a class="link" href="#_find_member_pw">Find Member Pw</a></h3>
+<div class="paragraph">
+<p>회원 pw 찾기</p>
+</div>
+<div class="sect3">
+<h4 id="_find_member_pw_http_request"><a class="link" href="#_find_member_pw_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /member/find-pw HTTP/1.1
+Content-Length: 105
+Host: localhost:8080
+
+{
+  "id" : "abc",
+  "pw" : null,
+  "name" : null,
+  "phone" : "010-0000-0000",
+  "address" : null
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_find_member_pw_http_response"><a class="link" href="#_find_member_pw_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 19
+
+찾은 비밀번호</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_register_member"><a class="link" href="#_register_member">Register Member</a></h3>
+<div class="paragraph">
+<p>회원 등록</p>
+</div>
+<div class="sect3">
+<h4 id="_register_member_http_request"><a class="link" href="#_register_member_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /member HTTP/1.1
+Content-Length: 117
+Host: localhost:8080
+
+{
+  "id" : "abc",
+  "pw" : "123",
+  "name" : "myName",
+  "phone" : "010-0000-0000",
+  "address" : "myAddress"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_register_member_http_response"><a class="link" href="#_register_member_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 20
+
+회원 등록 성공</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_modify_member"><a class="link" href="#_modify_member">Modify Member</a></h3>
+<div class="paragraph">
+<p>회원 수정</p>
+</div>
+<div class="sect3">
+<h4 id="_modify_member_http_request"><a class="link" href="#_modify_member_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /member HTTP/1.1
+Content-Length: 121
+Host: localhost:8080
+
+{
+  "id" : "qwer",
+  "pw" : "1234",
+  "name" : "newName",
+  "phone" : "010-1111-1111",
+  "address" : "newAddress"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_modify_member_http_response"><a class="link" href="#_modify_member_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 27
+
+회원 정보 수정 성공</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_delete_member"><a class="link" href="#_delete_member">Delete Member</a></h3>
+<div class="paragraph">
+<p>회원 삭제</p>
+</div>
+<div class="sect3">
+<h4 id="_delete_member_http_request"><a class="link" href="#_delete_member_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /member/id_1,id_2,id_3 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_member_http_response"><a class="link" href="#_delete_member_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 20
+
+회원 삭제 성공</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_check_member"><a class="link" href="#_check_member">Check Member</a></h3>
+<div class="paragraph">
+<p>회원 조회</p>
+</div>
+<div class="sect3">
+<h4 id="_check_member_http_request"><a class="link" href="#_check_member_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /member/id_1,id_2 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_check_member_http_response"><a class="link" href="#_check_member_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 242
+
+[ {
+  "id" : "id_1",
+  "pw" : "123",
+  "name" : "myName",
+  "phone" : "010-0000-0000",
+  "address" : "myAddress"
+}, {
+  "id" : "id_2",
+  "pw" : "123",
+  "name" : "myName",
+  "phone" : "010-0000-0000",
+  "address" : "myAddress"
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-08-18 20:15:11 +0900
+Last updated 2023-08-22 00:49:51 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

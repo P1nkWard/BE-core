@@ -49,20 +49,20 @@ public class RestDocsExampleTest extends RestDocsTestSupport {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
 
-    @Test
-    @DisplayName(value = "멤버 회원가입 테스트")
-    public void member_register_test() throws Exception {
-        //given
-        RequestRegisterMember member = new RequestRegisterMember();
-        member.id = "qotndk";
-        member.pw = "qotndk";
-        //pw를 encode 해가지고 처리한다던지.
-        String requestJson = objectMapper.writeValueAsString(member);
-
-        mvc.perform(MockMvcRequestBuilders.post("/register")
-                        .content(requestJson))
-                .andExpect(status().isOk());
-
-
-    }
+//    @Test
+//    @DisplayName(value = "멤버 회원가입 테스트")
+//    public void member_register_test() throws Exception {
+//        //given
+//        RequestRegisterMember member = new RequestRegisterMember();
+//        member.id = "qotndk";
+//        member.pw = "qotndk";
+//        //pw를 encode 해가지고 처리한다던지.
+//        String requestJson = objectMapper.writeValueAsString(member);
+//
+//        mvc.perform(MockMvcRequestBuilders.post("/register")
+//                        .content(requestJson))
+//                .andExpect(status().isOk());
+//
+//
+//    }
 }
