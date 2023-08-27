@@ -36,8 +36,16 @@ public class MemberController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<?> login(MemberDto member) {
-        return ResponseEntity.ok("success");
+    public ResponseEntity<?> login(@RequestParam String id, @RequestParam String pw, @RequestHeader(name = "referer") String referer) {
+        MemberDto member = new MemberDto();
+        member.setId(id);
+        member.setPw(pw);
+        memberService.login(member);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HEADER_REFERER, referer);
+
+        return ResponseEntity.status(200).headers(httpHeaders).body(member.getId());
     }
 
     @GetMapping

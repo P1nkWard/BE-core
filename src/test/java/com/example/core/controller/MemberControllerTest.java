@@ -43,11 +43,11 @@ public class MemberControllerTest extends RestDocsTestSupport {
 
         mvc.perform(MockMvcRequestBuilders.post("/members/register")
                         .content(requestJson)
-                        .header("referer","http://localhost:8080/home")
+                        .header("referer", "http://localhost:8080/home")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(member.getId()))
-                .andExpect(header().string("referer","http://localhost:8080/home"))
+                .andExpect(header().string("referer", "http://localhost:8080/home"))
                 .andDo(print());
     }
 
@@ -148,21 +148,16 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 .andDo(print());
     }
 
-//    @Test
-//    @DisplayName(value = "로그인 테스트")
-//    public void loginTest() throws Exception {
-//        // body 데이터
-//        MemberDto member = new MemberDto();
-//        member.setId("abc");
-//        member.setPw("123");
-//        member.setName("myName");
-//        member.setPhone(phone);
-//        member.setAddress(address);
-//        String requestJson = objectMapper.writeValueAsString(member);
-//
-//        mvc.perform(MockMvcRequestBuilders.post("/login")
-//                        .content(requestJson))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
+    @Test
+    @DisplayName(value = "로그인 테스트")
+    public void loginTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/members/login")
+                        .param("id", "abc")
+                        .param("pw", "123")
+                        .header("referer", "http://localhost:8080/home")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(header().string("referer", "http://localhost:8080/home"))
+                .andDo(print());
+    }
 }

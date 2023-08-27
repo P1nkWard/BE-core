@@ -1,6 +1,11 @@
 [[Member]]
 == Member
 
+=== Login
+로그인
+
+operation::member-controller-test/login-test[snippets='http-request,http-response']
+
 === Find Member Id
 회원 id 찾기
 
