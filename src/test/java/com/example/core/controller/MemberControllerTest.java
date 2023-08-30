@@ -32,7 +32,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
     public void registerMemberTest() throws Exception {
         // body 데이터
         Phone phone = new Phone("010", "0000", "0000");
-        Address address = new Address("대한민국 경기도 의정부시", "경민로 00길", "401호");
+        Address address = new Address("대한민국 경기도 의정부시1", "경민로 00길", "401호");
         MemberDto member = new MemberDto();
         member.setId("abc");
         member.setPw("123");
@@ -40,7 +40,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
         member.setPhone(phone);
         member.setAddress(address);
         String requestJson = objectMapper.writeValueAsString(member);
-
+        System.out.println(requestJson+"리퀘스트제이슨");
         mvc.perform(MockMvcRequestBuilders.post("/members/register")
                         .content(requestJson)
                         .header("referer", "http://localhost:8080/home")
