@@ -1,6 +1,5 @@
 package com.example.core.controller;
 
-import com.example.core.member.controller.MemberController;
 import com.example.core.member.dto.MemberDto;
 import com.example.core.document.config.RestDocsTestSupport;
 import com.example.core.member.domain.Address;
@@ -9,8 +8,6 @@ import com.example.core.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -18,7 +15,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class MemberControllerTest extends RestDocsTestSupport {
@@ -47,8 +45,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(member.getId()))
-                .andExpect(header().string("referer", "http://localhost:8080/home"))
-                .andDo(print());
+                .andExpect(header().string("referer", "http://localhost:8080/home"));
     }
 
     @Test
@@ -69,8 +66,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
          */
 
         mvc.perform(MockMvcRequestBuilders.get("/members"))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -91,8 +87,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("회원 정보 수정 성공"))
-                .andDo(print());
+                .andExpect(content().string("회원 정보 수정 성공"));
     }
 
     @Test
@@ -106,8 +101,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
 
         mvc.perform(MockMvcRequestBuilders.delete("/members/{ids}", idString))
                 .andExpect(status().isOk())
-                .andExpect(content().string("회원 삭제 성공"))
-                .andDo(print());
+                .andExpect(content().string("회원 삭제 성공"));
     }
 
     @Test
@@ -125,8 +119,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("찾은 아이디"))
-                .andDo(print());
+                .andExpect(content().string("찾은 아이디"));
     }
 
     @Test
@@ -144,20 +137,44 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("찾은 비밀번호"))
-                .andDo(print());
+                .andExpect(content().string("찾은 비밀번호"));
     }
 
     @Test
-    @DisplayName(value = "로그인 테스트")
-    public void loginTest() throws Exception {
+    @DisplayName(value = "로그인 성공 테스트")
+    public void loginSuccessTest() throws Exception {
+        String id = "abc";
+        String pw = "123";
+        String referer = "http://localhost:8080/home";
+
+        when(memberService.login(any(MemberDto.class))).thenReturn(true);
+
         mvc.perform(MockMvcRequestBuilders.post("/members/login")
-                        .param("id", "abc")
-                        .param("pw", "123")
-                        .header("referer", "http://localhost:8080/home")
+                        .param("id", id)
+                        .param("pw", pw)
+                        .header("referer", referer)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(header().string("referer", "http://localhost:8080/home"))
-                .andDo(print());
+                .andExpect(header().string("referer", referer))
+                .andExpect(content().string(id));
+    }
+
+    @Test
+    @DisplayName(value = "로그인 실패 테스트")
+    public void loginFailTest() throws Exception {
+        String id = "abc";
+        String pw = "123";
+        String referer = "http://localhost:8080/home";
+
+        when(memberService.login(any(MemberDto.class))).thenReturn(false);
+
+        mvc.perform(MockMvcRequestBuilders.post("/members/login")
+                        .param("id", id)
+                        .param("pw", pw)
+                        .header("referer", referer)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(header().string("referer", referer))
+                .andExpect(content().string("로그인 실패"));
     }
 }
