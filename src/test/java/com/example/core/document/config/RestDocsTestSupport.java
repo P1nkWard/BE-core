@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -21,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Import(RestDocsConfig.class)
-@WebMvcTest
+@SpringBootTest
 @ExtendWith({RestDocumentationExtension.class, MockitoExtension.class})
 public class RestDocsTestSupport {
 
@@ -39,4 +40,9 @@ public class RestDocsTestSupport {
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
+    // 이부분 해석해서 올리고
+    // 이부분을 왜 이렇게 바꿔야하는지
+    // 왜 이렇게 했어야했고 어떻게 바꿔야하는지
+    // 다시 정리해서 올리기
+
 }

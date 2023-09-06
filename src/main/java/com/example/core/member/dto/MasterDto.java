@@ -4,7 +4,11 @@ import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class MasterDto{
     @NotBlank
     private String id;
@@ -55,5 +59,9 @@ public class MasterDto{
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public MasterDto toEntity() {
+        return new MasterDto(id,pw,name,phone,address);
     }
 }

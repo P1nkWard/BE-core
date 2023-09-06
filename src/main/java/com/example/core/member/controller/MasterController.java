@@ -19,11 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("master")
 public class MasterController {
 
     private static String HEADER_REFERER = "referer";
     private final MasterService masterService;
-    @PostMapping("/master/register")
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Validated MasterDto master,
                                            @RequestHeader(name = "referer") String referer, Errors errors) {
         if (errors.hasErrors()) throw new ValidationException();

@@ -1,6 +1,7 @@
 package com.example.core.controller;
 
 import com.example.core.document.config.RestDocsTestSupport;
+import com.example.core.member.controller.MasterController;
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
 import com.example.core.member.dto.MasterDto;
@@ -11,19 +12,23 @@ import com.example.core.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class MasterControllerTest extends RestDocsTestSupport {
-
+@WebMvcTest(controllers = MasterController.class)
+public class MasterControllerTest {
+    @Autowired
+    private MockMvc mvc;
     private static ObjectMapper objectMapper = new ObjectMapper();
     @MockBean
     private MasterService masterService;
-
     @Test
     @DisplayName(value = "사장님 회원가입 테스트")
     public void registerMasterTest() throws Exception {
@@ -46,5 +51,6 @@ public class MasterControllerTest extends RestDocsTestSupport {
                 .andExpect(header().string("referer", "http://localhost:8080/home"))
                 .andDo(print());
     }
+
 
 }
