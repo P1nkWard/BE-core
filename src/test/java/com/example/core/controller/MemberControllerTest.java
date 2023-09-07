@@ -49,6 +49,7 @@ public class MemberControllerTest extends RestDocsTestSupport {
     @Test
     @DisplayName(value = "회원가입 테스트")
     public void registerMemberTest() throws Exception {
+        when(memberService.register(any())).thenReturn(true);
         String requestJson = objectMapper.writeValueAsString(member);
 
         mvc.perform(MockMvcRequestBuilders.post("/members/register")
@@ -56,7 +57,8 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         .header("referer", "http://localhost:8080/home")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(member.getId()))
+                .andExpect(jsonPath("$.message").value("회원가입 성공"))
+                .andExpect(jsonPath("$.id").value("abc"))
                 .andExpect(header().string("referer", "http://localhost:8080/home"));
     }
 

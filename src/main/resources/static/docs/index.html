@@ -508,17 +508,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="sect3">
 <h4 id="Example_adocfile_http_request"><a class="link" href="#Example_adocfile_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /register HTTP/1.1
-Content-Length: 43
-Host: localhost:8080
-
-{
-  "id" : "qotndk",
-  "pw" : "qotndk"
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Snippet http-request not found for operation::rest-docs-example-test/member_register_test</p>
 </div>
 </div>
 <div class="sect3">
@@ -529,13 +520,8 @@ Host: localhost:8080
 </div>
 <div class="sect3">
 <h4 id="Example_adocfile_http_response"><a class="link" href="#Example_adocfile_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
+<div class="paragraph">
+<p>Snippet http-response not found for operation::rest-docs-example-test/member_register_test</p>
 </div>
 </div>
 <div class="sect3">
@@ -571,15 +557,16 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 referer: http://localhost:8080/home
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 3
+Content-Type: application/json;charset=UTF-8
+Content-Length: 75
 
-abc</code></pre>
+{
+  "loginResult" : "1",
+  "id" : "abc",
+  "message" : "로그인 성공"
+}</code></pre>
 </div>
 </div>
-</div>
-<div class="paragraph">
-<p> </p>
 </div>
 </div>
 <div class="sect3">
@@ -601,10 +588,14 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 referer: http://localhost:8080/home
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 3
+Content-Type: application/json;charset=UTF-8
+Content-Length: 75
 
-abc</code></pre>
+{
+  "loginResult" : "1",
+  "id" : "abc",
+  "message" : "로그인 성공"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -618,19 +609,25 @@ abc</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /members/find-id HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 166
+Content-Length: 310
 Host: localhost:8080
 
 {
-  "id" : null,
-  "pw" : null,
+  "id" : "abc",
+  "pw" : "123",
   "name" : "myName",
+  "email" : null,
   "phone" : {
     "first" : "010",
     "middle" : "0000",
     "last" : "0000"
   },
-  "address" : null
+  "address" : {
+    "city" : "대한민국 경기도 의정부시",
+    "street" : "경민로 00길",
+    "detail" : "401호"
+  },
+  "createDate" : null
 }</code></pre>
 </div>
 </div>
@@ -656,19 +653,25 @@ Content-Length: 16
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /members/find-pw HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 163
+Content-Length: 310
 Host: localhost:8080
 
 {
   "id" : "abc",
-  "pw" : null,
-  "name" : null,
+  "pw" : "123",
+  "name" : "myName",
+  "email" : null,
   "phone" : {
     "first" : "010",
     "middle" : "0000",
     "last" : "0000"
   },
-  "address" : null
+  "address" : {
+    "city" : "대한민국 경기도 의정부시",
+    "street" : "경민로 00길",
+    "detail" : "401호"
+  },
+  "createDate" : null
 }</code></pre>
 </div>
 </div>
@@ -695,13 +698,14 @@ Content-Length: 19
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /members/register HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 referer: http://localhost:8080/home
-Content-Length: 283
+Content-Length: 310
 Host: localhost:8080
 
 {
   "id" : "abc",
   "pw" : "123",
   "name" : "myName",
+  "email" : null,
   "phone" : {
     "first" : "010",
     "middle" : "0000",
@@ -711,7 +715,8 @@ Host: localhost:8080
     "city" : "대한민국 경기도 의정부시",
     "street" : "경민로 00길",
     "detail" : "401호"
-  }
+  },
+  "createDate" : null
 }</code></pre>
 </div>
 </div>
@@ -722,10 +727,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 referer: http://localhost:8080/home
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 3
+Content-Type: application/json;charset=UTF-8
+Content-Length: 55
 
-abc</code></pre>
+{
+  "id" : "abc",
+  "message" : "회원가입 성공"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -738,13 +746,14 @@ abc</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 286
+Content-Length: 313
 Host: localhost:8080
 
 {
   "id" : "qwer",
   "pw" : "1234",
   "name" : "newName",
+  "email" : null,
   "phone" : {
     "first" : "010",
     "middle" : "1111",
@@ -754,7 +763,8 @@ Host: localhost:8080
     "city" : "대한민국 경기도 의정부시",
     "street" : "경민로 00길",
     "detail" : "501호"
-  }
+  },
+  "createDate" : null
 }</code></pre>
 </div>
 </div>
@@ -822,7 +832,7 @@ Host: localhost:8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-08-22 00:49:51 +0900
+Last updated 2023-08-27 16:29:02 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

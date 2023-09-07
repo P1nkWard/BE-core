@@ -7,6 +7,7 @@ import com.example.core.member.service.MemberService;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -60,18 +61,18 @@ public class MemberController {
         MemberDto member = new MemberDto(id, pw);
         int loginResult = loginService.login(member);
         Map<String, String> responseBody = new HashMap<>();
-        int status;
+        HttpStatus status;
         String message;
 
         // loginResult : -1 <- 존재하지 않는 아이디
         // loginResult : 0 <- 비밀번호 불일치
         // loginResult : 1 <- 로그인 성공
         if (loginResult == 1) {
-            status = 200;
+            status = HttpStatus.OK;
             message = "로그인 성공";
             responseBody.put("id", id);
         } else {
-            status = 401;
+            status = HttpStatus.UNAUTHORIZED;
             message = (loginResult == 0) ? "로그인 실패 - 비밀번호 불일치" : "로그인 실패 - 존재하지 않는 아이디";
         }
 
@@ -80,7 +81,6 @@ public class MemberController {
 
         return ResponseEntity.status(status).headers(httpHeaders).body(responseBody);
     }
-
     @PostMapping("inquiry")
     public ResponseEntity<List<MemberDto>> findList(@RequestBody MemberSearchSpecRequest searchSpec) {
         List<MemberDto> members = memberService.search(searchSpec);
