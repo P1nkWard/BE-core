@@ -19,10 +19,10 @@ public class Store {
     private Address storeAddress;
 
     @ManyToOne
-    @JoinColumn(name ="masterId")
+    @JoinColumn(name = "masterId")
     private Master master;
 
-    public Store(StoreDto storeDto){
+    public Store(StoreDto storeDto) {
         this.storeName = storeDto.getStoreName();
         this.storePhone = storeDto.getStorePhone();
         this.storeAddress = storeDto.getStoreAddress();
