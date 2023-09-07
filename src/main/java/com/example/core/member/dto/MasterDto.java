@@ -2,6 +2,7 @@ package com.example.core.member.dto;
 
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
+import com.example.core.member.domain.Store;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,39 +11,52 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MasterDto{
-    @NotBlank
-    private String id;
-    @NotBlank
-    private String pw;
-    @NotBlank
-    private String name;
-    @Valid
-    private Phone phone;
-    @Valid
-    private Address address;
+    private String masterId; // pk
+    private String masterPw;
+    private String masterName;
+    private String masterEmail;
+    private Store store;
+    private Phone phone; // embedded
+    private Address address; // embedded
 
-    public String getId() {
-        return id;
+    public String getMasterId() {
+        return masterId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
     }
 
-    public String getPw() {
-        return pw;
+    public String getMasterPw() {
+        return masterPw;
     }
 
-    public void setPw(String pw) {
-        this.pw = pw;
+    public void setMasterPw(String masterPw) {
+        this.masterPw = masterPw;
     }
 
-    public String getName() {
-        return name;
+    public String getMasterName() {
+        return masterName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
+
+    public String getMasterEmail() {
+        return masterEmail;
+    }
+
+    public void setMasterEmail(String masterEmail) {
+        this.masterEmail = masterEmail;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     public Phone getPhone() {
@@ -59,9 +73,5 @@ public class MasterDto{
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public MasterDto toEntity() {
-        return new MasterDto(id,pw,name,phone,address);
     }
 }

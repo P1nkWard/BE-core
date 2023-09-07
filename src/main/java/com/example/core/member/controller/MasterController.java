@@ -2,6 +2,7 @@ package com.example.core.member.controller;
 
 import com.example.core.member.dto.MasterDto;
 import com.example.core.member.dto.MemberDto;
+import com.example.core.member.service.MasterDefaultService;
 import com.example.core.member.service.MasterService;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +24,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MasterController {
 
     private static String HEADER_REFERER = "referer";
-    private final MasterService masterService;
+    private final MasterDefaultService masterService;
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Validated MasterDto master,
                                            @RequestHeader(name = "referer") String referer, Errors errors) {
         if (errors.hasErrors()) throw new ValidationException();
-
-
-        masterService.register(master);
+        masterService.masterRegister(master);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HEADER_REFERER, referer);
 
-        return ResponseEntity.status(200).headers(httpHeaders).body(master.getId());
+        return ResponseEntity.status(200).headers(httpHeaders).body(master.getMasterId());
     }
 
 }

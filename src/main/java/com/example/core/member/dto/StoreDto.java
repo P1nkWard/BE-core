@@ -1,5 +1,8 @@
 package com.example.core.member.dto;
 
+import com.example.core.member.domain.Address;
+import com.example.core.member.domain.Master;
+import com.example.core.member.domain.Phone;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -7,19 +10,40 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreDto {
-    @NotBlank
-    String masterId;
     // 연관관계를 맺어줘야함 일단 이름만 해놓음
-    @NotBlank
-    String storeName;
+    private String storeName; // pk
+    private Master master; // fk
+    private Phone storePhone; // embedded
+    private Address storeAddress; // embedded
 
-    public String getMasterId() {
-        return masterId;
+    public StoreDto(String storeName){
+        this.storeName = storeName;
     }
 
-    public void setMasterId(String masterId) {
-        this.masterId = masterId;
+    public Phone getStorePhone() {
+        return storePhone;
     }
+
+    public void setStorePhone(Phone storePhone) {
+        this.storePhone = storePhone;
+    }
+
+    public Master getMaster() {
+        return master;
+    }
+
+    public void setMaster(Master master) {
+        this.master = master;
+    }
+
+    public Address getStoreAddress() {
+        return storeAddress;
+    }
+
+    public void setStoreAddress(Address storeAddress) {
+        this.storeAddress = storeAddress;
+    }
+
 
     public String getStoreName() {
         return storeName;
@@ -27,8 +51,5 @@ public class StoreDto {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
-    }
-    public StoreDto toEntity()  {
-        return new StoreDto(masterId,storeName);
     }
 }

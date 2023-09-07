@@ -1,7 +1,9 @@
 package com.example.core.member.domain;
 
+import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 
+@Embeddable
 public class Phone {
     @NotBlank
     private String first;
