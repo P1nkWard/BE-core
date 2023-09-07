@@ -1,13 +1,18 @@
 package com.example.core.controller;
 
+import com.example.core.member.controller.MemberController;
 import com.example.core.member.dto.MemberDto;
 import com.example.core.document.config.RestDocsTestSupport;
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
+import com.example.core.member.dto.MemberSearchSpecRequest;
+import com.example.core.member.service.LoginService;
 import com.example.core.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -19,24 +24,31 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@WebMvcTest(MemberController.class)
 public class MemberControllerTest extends RestDocsTestSupport {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
     @MockBean
     private MemberService memberService;
+    @MockBean
+    private LoginService loginService;
+
+    private Phone phone;
+    private Address address;
+    private MemberDto member;
+    private String referer;
+
+    @BeforeEach
+    void setUp() {
+        phone = new Phone("010", "0000", "0000");
+        address = new Address("대한민국 경기도 의정부시", "경민로 00길", "401호");
+        member = new MemberDto("abc", "123", "myName", phone, address);
+        referer = "http://localhost:8080/home";
+    }
 
     @Test
     @DisplayName(value = "회원가입 테스트")
     public void registerMemberTest() throws Exception {
-        // body 데이터
-        Phone phone = new Phone("010", "0000", "0000");
-        Address address = new Address("대한민국 경기도 의정부시", "경민로 00길", "401호");
-        MemberDto member = new MemberDto();
-        member.setId("abc");
-        member.setPw("123");
-        member.setName("myName");
-        member.setPhone(phone);
-        member.setAddress(address);
         String requestJson = objectMapper.writeValueAsString(member);
 
         mvc.perform(MockMvcRequestBuilders.post("/members/register")
@@ -50,29 +62,26 @@ public class MemberControllerTest extends RestDocsTestSupport {
 
     @Test
     @DisplayName(value = "회원 조회 테스트")
-    public void checkMemberTest() throws Exception {
-        List<String> ids = new ArrayList<>();
-        ids.add("id_1");
-        ids.add("id_2");
-        /*
-        ids 변수는 List<String> 타입이므로 ids.toString()의 결과가 전달됨.
-        따라서 경로 변수의 값은 "[id_1, id_2]"로 전달됨.
-        Controller에서는 쉼표를 기준으로 나누어 List<String>타입의 변수에 저장하기 때문에 검증을 하면
-        Expected :id_1
-        Actual   :[id_1
-        이렇게 됨. 이를 해결하기 위해
-        String ids = "id_1,id_2";
-        이렇게 하거나 List<String> 타입의 변수를 문자열로 변환하는 과정이 필요함.
-         */
+    public void findListTest() throws Exception {
+        List<MemberDto> members = List.of(new MemberDto("abc", "123"));
+        List<String> ids = List.of("abc", "qwer");
+        MemberSearchSpecRequest searchSpec = new MemberSearchSpecRequest();
 
-        mvc.perform(MockMvcRequestBuilders.get("/members"))
-                .andExpect(status().isOk());
+        searchSpec.setIds(ids);
+        String requestJson = objectMapper.writeValueAsString(searchSpec);
+
+        when(memberService.search(searchSpec)).thenReturn(members);
+
+        mvc.perform(MockMvcRequestBuilders.post("/members/inquiry")
+                        .content(requestJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(members.get(0).getId()));
     }
 
     @Test
     @DisplayName(value = "회원 수정 테스트")
     public void ModifyMemberTest() throws Exception {
-        // body 데이터
         Phone phone = new Phone("010", "1111", "1111");
         Address address = new Address("대한민국 경기도 의정부시", "경민로 00길", "501호");
         MemberDto member = new MemberDto();
@@ -107,12 +116,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
     @Test
     @DisplayName(value = "회원 id 찾기 테스트")
     public void findMemberIdTest() throws Exception {
-        Phone phone = new Phone("010", "0000", "0000");
-        Address address = new Address("대한민국 경기도 의정부시", "경민로 00길", "401호");
-        // body 데이터
-        MemberDto member = new MemberDto();
-        member.setName("myName");
-        member.setPhone(phone);
         String requestJson = objectMapper.writeValueAsString(member);
 
         mvc.perform(MockMvcRequestBuilders.post("/members/find-id")
@@ -125,12 +128,6 @@ public class MemberControllerTest extends RestDocsTestSupport {
     @Test
     @DisplayName(value = "회원 pw 찾기 테스트")
     public void findMemberPwTest() throws Exception {
-        Phone phone = new Phone("010", "0000", "0000");
-        Address address = new Address("대한민국 경기도 의정부시", "경민로 00길", "401호");
-        // body 데이터
-        MemberDto member = new MemberDto();
-        member.setId("abc");
-        member.setPhone(phone);
         String requestJson = objectMapper.writeValueAsString(member);
 
         mvc.perform(MockMvcRequestBuilders.post("/members/find-pw")
@@ -143,38 +140,49 @@ public class MemberControllerTest extends RestDocsTestSupport {
     @Test
     @DisplayName(value = "로그인 성공 테스트")
     public void loginSuccessTest() throws Exception {
-        String id = "abc";
-        String pw = "123";
-        String referer = "http://localhost:8080/home";
-
-        when(memberService.login(any(MemberDto.class))).thenReturn(true);
+        when(loginService.login(any(MemberDto.class))).thenReturn(1);
 
         mvc.perform(MockMvcRequestBuilders.post("/members/login")
-                        .param("id", id)
-                        .param("pw", pw)
+                        .param("id", member.getId())
+                        .param("pw", member.getPw())
                         .header("referer", referer)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(header().string("referer", referer))
-                .andExpect(content().string(id));
+                .andExpect(jsonPath("$.id").value(member.getId()))
+                .andExpect(jsonPath("$.loginResult").value("1"))
+                .andExpect(jsonPath("$.message").value("로그인 성공"));
     }
 
     @Test
-    @DisplayName(value = "로그인 실패 테스트")
-    public void loginFailTest() throws Exception {
-        String id = "abc";
-        String pw = "123";
-        String referer = "http://localhost:8080/home";
-
-        when(memberService.login(any(MemberDto.class))).thenReturn(false);
+    @DisplayName(value = "로그인 실패 테스트 - 존재하지 않는 아이디")
+    public void loginFailTestWithNonexistentId() throws Exception {
+        when(loginService.login(any(MemberDto.class))).thenReturn(-1);
 
         mvc.perform(MockMvcRequestBuilders.post("/members/login")
-                        .param("id", id)
-                        .param("pw", pw)
+                        .param("id", member.getId())
+                        .param("pw", member.getPw())
                         .header("referer", referer)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
                 .andExpect(header().string("referer", referer))
-                .andExpect(content().string("로그인 실패"));
+                .andExpect(jsonPath("$.loginResult").value("-1"))
+                .andExpect(jsonPath("$.message").value("로그인 실패 - 존재하지 않는 아이디"));
+    }
+
+    @Test
+    @DisplayName(value = "로그인 실패 테스트 - 비밀번호 불일치")
+    public void loginFailTestWithWrongPassword() throws Exception {
+        when(loginService.login(any(MemberDto.class))).thenReturn(-1);
+
+        mvc.perform(MockMvcRequestBuilders.post("/members/login")
+                        .param("id", member.getId())
+                        .param("pw", member.getPw())
+                        .header("referer", referer)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(header().string("referer", referer))
+                .andExpect(jsonPath("$.loginResult").value("-1"))
+                .andExpect(jsonPath("$.message").value("로그인 실패 - 존재하지 않는 아이디"));
     }
 }
