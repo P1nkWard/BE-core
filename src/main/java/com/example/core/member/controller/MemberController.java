@@ -1,9 +1,11 @@
 package com.example.core.member.controller;
 
+import com.example.core.member.dto.LoginDto;
 import com.example.core.member.dto.MemberDto;
 import com.example.core.member.dto.MemberSearchSpecRequest;
 import com.example.core.member.service.LoginService;
 import com.example.core.member.service.MemberService;
+import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -39,7 +41,7 @@ public class MemberController {
         int status;
         String message;
 
-        if(result) {
+        if (result) {
             status = 200;
             message = "회원가입 성공";
             responseBody.put("id", member.getId());
@@ -54,33 +56,29 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestParam String id, @RequestParam String pw, @RequestHeader(name = "referer") String referer) {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto dto, @RequestHeader(name = "referer") String referer) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HEADER_REFERER, referer);
 
-        MemberDto member = new MemberDto(id, pw);
-        int loginResult = loginService.login(member);
+        loginService.login(dto);
+
         Map<String, String> responseBody = new HashMap<>();
-        HttpStatus status;
-        String message;
+        responseBody.put("id", dto.getId());
+        responseBody.put("message", "로그인 성공");
 
-        // loginResult : -1 <- 존재하지 않는 아이디
-        // loginResult : 0 <- 비밀번호 불일치
-        // loginResult : 1 <- 로그인 성공
-        if (loginResult == 1) {
-            status = HttpStatus.OK;
-            message = "로그인 성공";
-            responseBody.put("id", id);
-        } else {
-            status = HttpStatus.UNAUTHORIZED;
-            message = (loginResult == 0) ? "로그인 실패 - 비밀번호 불일치" : "로그인 실패 - 존재하지 않는 아이디";
-        }
+        /*
+        // 가정: createToken 메소드가 액세스 토큰과 리프레시 토큰을 생성합니다.
+        TokenDto tokenDto = createToken(dto);
+        responseBody.put("accessToken", tokenDto.getAccessToken());
+        responseBody.put("refreshToken", tokenDto.getRefreshToken());
+        responseBody.put("expiresIn", tokenDto.getExpiresIn());
+        // RESTful API를 설계할 때는 주로 토큰 기반 인증을 사용함. 이는 REST 원칙 중 하나인 무상태성을 준수하기 위함
+        // 세션 기반 인증은 서버가 클라이언트의 상태(즉, 세션)를 저장하므로 RESTful API의 무상태성 원칙을 위반함
+        */
 
-        responseBody.put("loginResult", Integer.toString(loginResult));
-        responseBody.put("message", message);
-
-        return ResponseEntity.status(status).headers(httpHeaders).body(responseBody);
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(responseBody);
     }
+
     @PostMapping("inquiry")
     public ResponseEntity<List<MemberDto>> findList(@RequestBody MemberSearchSpecRequest searchSpec) {
         List<MemberDto> members = memberService.search(searchSpec);

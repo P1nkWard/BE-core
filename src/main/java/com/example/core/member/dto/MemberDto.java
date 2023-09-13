@@ -4,7 +4,6 @@ import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
 import com.example.core.member.entity.Member;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,11 +12,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberDto {
-    @NotBlank
     private String id;
-    @NotBlank
     private String pw;
-    @NotBlank
     private String name;
     private String email;
     @Valid
