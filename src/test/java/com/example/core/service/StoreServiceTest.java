@@ -137,7 +137,7 @@ public class StoreServiceTest {
                 @Test
                 void modifyStoreFailed(){
                     // 가게가 존재하지 않음을 나타내는 Optional 객체를 반환하도록 설정
-                    when(storeRepository.findById(nonExistingStoreName)).thenReturn(Optional.empty());
+//                    when(storeRepository.findById(nonExistingStoreName)).thenReturn(Optional.empty());
 
                     // 서비스 메서드 호출
                     StoreDto storeDto = new StoreDto();
