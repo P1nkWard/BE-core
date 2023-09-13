@@ -1,10 +1,13 @@
 package com.example.core.service;
 
+import com.example.core.member.domain.Address;
+import com.example.core.member.domain.Phone;
 import com.example.core.member.dto.MemberDto;
 import com.example.core.member.dto.MemberSearchSpecRequest;
+import com.example.core.member.dto.RegisterDto;
 import com.example.core.member.entity.Member;
+import com.example.core.member.exception.MemberAlreadyExistsException;
 import com.example.core.member.persistence.MemberRepository;
-import com.example.core.member.service.LoginService;
 import com.example.core.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {
@@ -26,62 +29,35 @@ public class MemberServiceTest {
     private MemberRepository memberRepository;
 
     @InjectMocks
-    private LoginService loginService;
-    @InjectMocks
     private MemberService memberService;
 
     private Member member;
     private List<Member> members;
     private MemberDto dto;
+    private RegisterDto registerDto;
 
     @BeforeEach
     void setUp() {
         String id = "abc";
         String pw = "123";
+        String name = "myName";
+        String email = "test@test.com";
+        Phone phone = new Phone("010", "0000", "0000");
+        Address address = new Address("대한민국 경기도 의정부시", "경민로 00길", "401호");
 
-        member = new Member(id, pw);
+        registerDto = new RegisterDto(id, pw, name, email, phone, address);
+        member = Member.fromDto(registerDto);
         members = List.of(member);
         dto = new MemberDto(id, pw);
     }
 
     @Test
-    @DisplayName(value = "로그인 성공 테스트")
-    public void loginSuccessTest() {
-        when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(member));
-
-        int result = loginService.login(dto);
-        assertEquals(1, result);
-    }
-
-    @Test
-    @DisplayName(value = "로그인 실패 테스트 - 존재하지 않는 아이디")
-    public void loginFailTestWithNonexistentId() {
-        dto.setId("nonexistentId");
-
-        when(memberRepository.findById(dto.getId())).thenReturn(Optional.empty());
-
-        int result = loginService.login(dto);
-        assertEquals(-1, result);
-    }
-
-    @Test
-    @DisplayName(value = "로그인 실패 테스트 - 비밀번호 불일치")
-    public void loginFailTestWithWrongPassword() {
-        dto.setPw("wrongPw");
-
-        when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(member));
-
-        int result = loginService.login(dto);
-        assertNotEquals(1, result);
-    }
-
-    @Test
     @DisplayName(value = "회원가입 성공 테스트")
     public void registerSuccessTest() {
-        when(memberRepository.findById(dto.getId())).thenReturn(Optional.empty());
+        when(memberRepository.findById(registerDto.getId())).thenReturn(Optional.empty());
 
-        boolean result = memberService.register(dto);
-        assertTrue(result);
+        assertDoesNotThrow(() -> memberService.register(registerDto));
+        verify(memberRepository, times(1)).findById(registerDto.getId());
     }
 
     @Test
@@ -89,8 +65,8 @@ public class MemberServiceTest {
     public void registerFailTest() {
         when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(member));
 
-        boolean result = memberService.register(dto);
-        assertFalse(result);
+        Exception exception = assertThrows(MemberAlreadyExistsException.class, () -> memberService.register(registerDto));
+        assertTrue(exception.getMessage().contains("이미 존재하는 아이디입니다"));
     }
 
     @Test

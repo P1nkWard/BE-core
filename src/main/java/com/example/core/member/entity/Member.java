@@ -3,6 +3,7 @@ package com.example.core.member.entity;
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
 import com.example.core.member.dto.MemberDto;
+import com.example.core.member.dto.RegisterDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,6 @@ import java.time.LocalDate;
 @Table(name = "member")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     @Column(nullable = false)
     private String pw;
@@ -43,5 +43,18 @@ public class Member {
         this.phone = dto.getPhone();
         this.address = dto.getAddress();
         this.createDate = dto.getCreateDate();
+    }
+
+    public static Member fromDto(RegisterDto dto) {
+        Member member = new Member();
+
+        member.id = dto.getId();
+        member.pw = dto.getPw();
+        member.name = dto.getName();
+        member.email = dto.getEmail();
+        member.phone = dto.getPhone();
+        member.address = dto.getAddress();
+
+        return member;
     }
 }

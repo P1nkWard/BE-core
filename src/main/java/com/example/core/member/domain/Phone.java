@@ -2,14 +2,14 @@ package com.example.core.member.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Objects;
 
 @Embeddable
 @Getter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Phone {
     @NotBlank
     private String first;
@@ -22,17 +22,5 @@ public class Phone {
         this.first = first;
         this.middle = middle;
         this.last = last;
-    }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Phone phone = (Phone) o;
-        return Objects.equals(first, phone.first) && Objects.equals(middle, phone.middle) && Objects.equals(last, phone.last);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(first, middle, last);
     }
 }

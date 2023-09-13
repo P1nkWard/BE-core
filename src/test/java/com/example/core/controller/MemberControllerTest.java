@@ -1,11 +1,13 @@
 package com.example.core.controller;
 
 import com.example.core.member.controller.MemberController;
+import com.example.core.member.dto.LoginDto;
 import com.example.core.member.dto.MemberDto;
 import com.example.core.document.config.RestDocsTestSupport;
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
 import com.example.core.member.dto.MemberSearchSpecRequest;
+import com.example.core.member.exception.InvalidCredentialsException;
 import com.example.core.member.service.LoginService;
 import com.example.core.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(MemberController.class)
@@ -36,14 +38,18 @@ public class MemberControllerTest extends RestDocsTestSupport {
     private Phone phone;
     private Address address;
     private MemberDto member;
+    private LoginDto  loginDto;
     private String referer;
+    private String exceptionMsg;
 
     @BeforeEach
     void setUp() {
         phone = new Phone("010", "0000", "0000");
         address = new Address("대한민국 경기도 의정부시", "경민로 00길", "401호");
         member = new MemberDto("abc", "123", "myName", phone, address);
+        loginDto = new LoginDto("abc", "123");
         referer = "http://localhost:8080/home";
+        exceptionMsg = "아이디 또는 비밀번호가 잘못되었습니다";
     }
 
     @Test
@@ -60,6 +66,50 @@ public class MemberControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.message").value("회원가입 성공"))
                 .andExpect(jsonPath("$.id").value("abc"))
                 .andExpect(header().string("referer", "http://localhost:8080/home"));
+    }
+
+    @Test
+    @DisplayName(value = "로그인 성공 테스트")
+    public void loginSuccessTest() throws Exception {
+        doNothing().when(loginService).login(any(LoginDto.class));
+        String requestJson = objectMapper.writeValueAsString(loginDto);
+
+        mvc.perform(MockMvcRequestBuilders.post("/members/login")
+                        .content(requestJson)
+                        .header("referer", referer)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(header().string("referer", referer))
+                .andExpect(jsonPath("$.id").value(loginDto.getId()))
+                .andExpect(jsonPath("$.message").value("로그인 성공"));
+    }
+
+    @Test
+    @DisplayName(value = "로그인 실패 테스트 - 존재하지 않는 아이디")
+    public void loginFailTestWithNonexistentId() throws Exception {
+        doThrow(new InvalidCredentialsException(exceptionMsg)).when(loginService).login(any(LoginDto.class));
+        String requestJson = objectMapper.writeValueAsString(loginDto);
+
+        mvc.perform(MockMvcRequestBuilders.post("/members/login")
+                        .content(requestJson)
+                        .header("referer", referer)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value(exceptionMsg));
+    }
+
+    @Test
+    @DisplayName(value = "로그인 실패 테스트 - 비밀번호 불일치")
+    public void loginFailTestWithWrongPassword() throws Exception {
+        doThrow(new InvalidCredentialsException(exceptionMsg)).when(loginService).login(any(LoginDto.class));
+        String requestJson = objectMapper.writeValueAsString(loginDto);
+
+        mvc.perform(MockMvcRequestBuilders.post("/members/login")
+                        .content(requestJson)
+                        .header("referer", referer)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value(exceptionMsg));
     }
 
     @Test
@@ -137,54 +187,5 @@ public class MemberControllerTest extends RestDocsTestSupport {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("찾은 비밀번호"));
-    }
-
-    @Test
-    @DisplayName(value = "로그인 성공 테스트")
-    public void loginSuccessTest() throws Exception {
-        when(loginService.login(any(MemberDto.class))).thenReturn(1);
-
-        mvc.perform(MockMvcRequestBuilders.post("/members/login")
-                        .param("id", member.getId())
-                        .param("pw", member.getPw())
-                        .header("referer", referer)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(header().string("referer", referer))
-                .andExpect(jsonPath("$.id").value(member.getId()))
-                .andExpect(jsonPath("$.loginResult").value("1"))
-                .andExpect(jsonPath("$.message").value("로그인 성공"));
-    }
-
-    @Test
-    @DisplayName(value = "로그인 실패 테스트 - 존재하지 않는 아이디")
-    public void loginFailTestWithNonexistentId() throws Exception {
-        when(loginService.login(any(MemberDto.class))).thenReturn(-1);
-
-        mvc.perform(MockMvcRequestBuilders.post("/members/login")
-                        .param("id", member.getId())
-                        .param("pw", member.getPw())
-                        .header("referer", referer)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized())
-                .andExpect(header().string("referer", referer))
-                .andExpect(jsonPath("$.loginResult").value("-1"))
-                .andExpect(jsonPath("$.message").value("로그인 실패 - 존재하지 않는 아이디"));
-    }
-
-    @Test
-    @DisplayName(value = "로그인 실패 테스트 - 비밀번호 불일치")
-    public void loginFailTestWithWrongPassword() throws Exception {
-        when(loginService.login(any(MemberDto.class))).thenReturn(-1);
-
-        mvc.perform(MockMvcRequestBuilders.post("/members/login")
-                        .param("id", member.getId())
-                        .param("pw", member.getPw())
-                        .header("referer", referer)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized())
-                .andExpect(header().string("referer", referer))
-                .andExpect(jsonPath("$.loginResult").value("-1"))
-                .andExpect(jsonPath("$.message").value("로그인 실패 - 존재하지 않는 아이디"));
     }
 }
