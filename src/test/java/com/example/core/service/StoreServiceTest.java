@@ -1,16 +1,10 @@
 package com.example.core.service;
 
-import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Master;
-import com.example.core.member.domain.Phone;
 import com.example.core.member.domain.Store;
-import com.example.core.member.dto.MasterDto;
 import com.example.core.member.dto.StoreDto;
-import com.example.core.member.repository.MasterRepository;
-import com.example.core.member.repository.StoreRepository;
+import com.example.core.member.persistence.MasterRepository;
+import com.example.core.member.persistence.StoreRepository;
 import com.example.core.member.service.StoreDefaultService;
-import com.example.core.repository.MasterRepositoryTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

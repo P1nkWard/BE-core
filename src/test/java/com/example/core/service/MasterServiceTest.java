@@ -1,15 +1,10 @@
 package com.example.core.service;
 
 import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Master;
 import com.example.core.member.domain.Phone;
 import com.example.core.member.dto.MasterDto;
-import com.example.core.member.dto.StoreDto;
-import com.example.core.member.repository.MasterRepository;
+import com.example.core.member.persistence.MasterRepository;
 import com.example.core.member.service.MasterDefaultService;
-import com.example.core.member.service.MasterService;
-import com.example.core.member.service.MemberService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,14 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.awt.*;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class MasterServiceTest {

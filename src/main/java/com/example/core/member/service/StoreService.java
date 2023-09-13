@@ -10,4 +10,5 @@ public interface StoreService {
     public Store modifyStore(StoreDto storeDto);
     public Optional<Store> registerStore(String masterId , StoreDto storeDto);
     public void removeStore(String storeId);
+    public Optional<Store> storeFindId(String id);
 }

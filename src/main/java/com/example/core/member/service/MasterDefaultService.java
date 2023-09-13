@@ -3,24 +3,24 @@ package com.example.core.member.service;
 import com.example.core.member.domain.Master;
 import com.example.core.member.domain.Store;
 import com.example.core.member.dto.MasterDto;
-import com.example.core.member.dto.MemberDto;
-import com.example.core.member.dto.StoreDto;
-import com.example.core.member.repository.MasterRepository;
-import com.example.core.member.repository.StoreRepository;
+import com.example.core.member.persistence.MasterRepository;
+import com.example.core.member.persistence.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
-public class MasterDefaultService implements MasterService {
+public class MasterDefaultService implements MasterService<MasterDto> {
     @Autowired
     MasterRepository masterRepository;
     @Autowired
     StoreRepository storeRepository;
 
+    @Override
+    public void testG(MasterDto t){
 
+    }
     @Override
     public void masterRegister(MasterDto masterDto){
     Optional<Master> master = masterRepository.findById(masterDto.getMasterId());
@@ -35,6 +35,7 @@ public class MasterDefaultService implements MasterService {
     @Override
     public  Master findMaster(String id){
         Optional<Master> findMaster = masterRepository.findById(id);
+        // dto 로 넣거나
         if(findMaster.isPresent()){
             return findMaster.get();
         }else{
@@ -54,6 +55,7 @@ public class MasterDefaultService implements MasterService {
             Set<Store> masterStore = removeMaster.get().getStoreSet();
             Iterator<Store> it = masterStore.iterator();
             while(it.hasNext()){
+                // 둘의 연관관계를 끊어주는것
                 Store store = it.next();
                 store.setMaster(null);
             }

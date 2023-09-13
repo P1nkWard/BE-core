@@ -2,8 +2,14 @@ package com.example.core.member.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@Getter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Phone {
     @NotBlank
     private String first;
@@ -12,22 +18,9 @@ public class Phone {
     @NotBlank
     private String last;
 
-    protected Phone(){}
     public Phone(String first, String middle, String last) {
         this.first = first;
         this.middle = middle;
         this.last = last;
-    }
-
-    public String getFirst() {
-        return first;
-    }
-
-    public String getMiddle() {
-        return middle;
-    }
-
-    public String getLast() {
-        return last;
     }
 }

@@ -1,15 +1,13 @@
 package com.example.core.member.service;
 
-import ch.qos.logback.core.pattern.parser.OptionTokenizer;
 import com.example.core.member.domain.Master;
 import com.example.core.member.domain.Store;
 import com.example.core.member.dto.StoreDto;
-import com.example.core.member.repository.MasterRepository;
-import com.example.core.member.repository.StoreRepository;
+import com.example.core.member.persistence.MasterRepository;
+import com.example.core.member.persistence.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -20,8 +18,13 @@ public class StoreDefaultService implements StoreService{
     @Autowired
     StoreRepository storeRepository;
 
+    @Override
+    public Optional<Store> storeFindId(String id) {
+        return storeRepository.findById(id);
+    }
+
     public Store modifyStore(StoreDto storeDto){
-        Optional<Store> store = storeRepository.findById(storeDto.getStoreName());
+        Optional<Store> store = storeFindId(storeDto.getStoreName());
         if(store.isPresent()){
         Store updateStore = new Store(storeDto);
         storeRepository.save(updateStore);
@@ -33,7 +36,7 @@ public class StoreDefaultService implements StoreService{
     @Override
     public Optional<Store> registerStore(String masterId , StoreDto storeDto) {
         Optional<Master> master = masterRepository.findById(masterId);
-        Optional<Store> store = storeRepository.findById(storeDto.getStoreName());
+        Optional<Store> store = storeFindId(storeDto.getStoreName());
         if(store.isPresent()){
             throw new NoSuchElementException("이미 존재하는 가게입니다.");
         }else{
