@@ -2,17 +2,21 @@ package com.example.core.member.controller;
 
 import com.example.core.member.dto.MemberDto;
 import com.example.core.member.dto.MemberSearchSpecRequest;
+import com.example.core.member.service.LoginService;
 import com.example.core.member.service.MemberService;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("members")
@@ -21,36 +25,67 @@ public class MemberController {
     private static String HEADER_REFERER = "referer";
 
     private final MemberService memberService;
+    private final LoginService loginService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Validated MemberDto member, @RequestHeader(name = "referer") String referer, Errors errors) {
+    public ResponseEntity<Map<String, String>> register(@RequestBody @Validated MemberDto member, @RequestHeader(name = "referer") String referer, Errors errors) {
         if (errors.hasErrors()) throw new ValidationException();
-
-        memberService.register(member);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HEADER_REFERER, referer);
 
-        return ResponseEntity.status(200).headers(httpHeaders).body(member.getId());
+        boolean result = memberService.register(member);
+        Map<String, String> responseBody = new HashMap<>();
+        int status;
+        String message;
+
+        if(result) {
+            status = 200;
+            message = "회원가입 성공";
+            responseBody.put("id", member.getId());
+        } else {
+            status = 409;
+            message = "회원가입 실패 - 이미 존재하는 아이디";
+        }
+
+        responseBody.put("message", message);
+
+        return ResponseEntity.status(status).headers(httpHeaders).body(responseBody);
     }
 
     @PostMapping("/login")
-    @ResponseBody
-    public ResponseEntity<?> login(@RequestParam String id, @RequestParam String pw, @RequestHeader(name = "referer") String referer) {
-        MemberDto member = new MemberDto();
-        member.setId(id);
-        member.setPw(pw);
-        memberService.login(member);
-
+    public ResponseEntity<Map<String, String>> login(@RequestParam String id, @RequestParam String pw, @RequestHeader(name = "referer") String referer) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HEADER_REFERER, referer);
 
-        return ResponseEntity.status(200).headers(httpHeaders).body(member.getId());
-    }
+        MemberDto member = new MemberDto(id, pw);
+        int loginResult = loginService.login(member);
+        Map<String, String> responseBody = new HashMap<>();
+        HttpStatus status;
+        String message;
 
-    @GetMapping
-    public ResponseEntity<List<MemberDto>> findList(MemberSearchSpecRequest searchSpec) {
-        return ResponseEntity.ok(null);
+        // loginResult : -1 <- 존재하지 않는 아이디
+        // loginResult : 0 <- 비밀번호 불일치
+        // loginResult : 1 <- 로그인 성공
+        if (loginResult == 1) {
+            status = HttpStatus.OK;
+            message = "로그인 성공";
+            responseBody.put("id", id);
+        } else {
+            status = HttpStatus.UNAUTHORIZED;
+            message = (loginResult == 0) ? "로그인 실패 - 비밀번호 불일치" : "로그인 실패 - 존재하지 않는 아이디";
+        }
+
+        responseBody.put("loginResult", Integer.toString(loginResult));
+        responseBody.put("message", message);
+
+        return ResponseEntity.status(status).headers(httpHeaders).body(responseBody);
+    }
+    @PostMapping("inquiry")
+    public ResponseEntity<List<MemberDto>> findList(@RequestBody MemberSearchSpecRequest searchSpec) {
+        List<MemberDto> members = memberService.search(searchSpec);
+
+        return ResponseEntity.ok(members);
     }
 
     @PutMapping
@@ -84,6 +119,4 @@ public class MemberController {
 
         return ResponseEntity.ok(userPw);
     }
-
-
 }
