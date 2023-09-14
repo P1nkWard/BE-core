@@ -1,6 +1,9 @@
-package com.example.core.member.domain;
+package com.example.core.master.entity;
 
-import com.example.core.member.dto.MasterDto;
+import com.example.core.member.domain.Address;
+import com.example.core.member.domain.Phone;
+import com.example.core.store.domain.Store;
+import com.example.core.master.dto.MasterDto;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

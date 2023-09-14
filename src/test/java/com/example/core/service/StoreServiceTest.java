@@ -1,10 +1,10 @@
 package com.example.core.service;
 
-import com.example.core.member.domain.Store;
-import com.example.core.member.dto.StoreDto;
-import com.example.core.member.persistence.MasterRepository;
-import com.example.core.member.persistence.StoreRepository;
-import com.example.core.member.service.StoreDefaultService;
+import com.example.core.store.domain.Store;
+import com.example.core.store.dto.StoreDto;
+import com.example.core.master.persistence.MasterRepository;
+import com.example.core.store.persistence.StoreRepository;
+import com.example.core.store.service.StoreDefaultService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

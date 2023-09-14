@@ -1,13 +1,9 @@
-package com.example.core.member.controller;
+package com.example.core.master.controller;
 
-import com.example.core.member.dto.MasterDto;
-import com.example.core.member.dto.MemberDto;
-import com.example.core.member.service.MasterDefaultService;
-import com.example.core.member.service.MasterService;
+import com.example.core.master.dto.MasterDto;
+import com.example.core.master.service.MasterDefaultService;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

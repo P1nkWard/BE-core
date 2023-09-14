@@ -1,9 +1,9 @@
-package com.example.core.member.dto;
+package com.example.core.store.dto;
 
 import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Master;
+import com.example.core.master.entity.Master;
 import com.example.core.member.domain.Phone;
-import jakarta.validation.constraints.NotBlank;
+import com.example.core.store.domain.Store;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +15,12 @@ public class StoreDto {
     private Master master; // fk
     private Phone storePhone; // embedded
     private Address storeAddress; // embedded
+    public StoreDto(Store store){
+        this.storeName = store.getStoreName();
+        this.master = store.getMaster();
+        this.storePhone = store.getStorePhone();
+        this.storeAddress = store.getStoreAddress();
+    }
 
     public StoreDto(String storeName){
         this.storeName = storeName;

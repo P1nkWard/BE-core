@@ -1,14 +1,10 @@
 package com.example.core.controller;
 
-import com.example.core.document.config.RestDocsTestSupport;
-import com.example.core.member.controller.MasterController;
+import com.example.core.master.controller.MasterController;
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
-import com.example.core.member.dto.MasterDto;
-import com.example.core.member.dto.MemberDto;
-import com.example.core.member.service.MasterDefaultService;
-import com.example.core.member.service.MasterService;
-import com.example.core.member.service.MemberService;
+import com.example.core.master.dto.MasterDto;
+import com.example.core.master.service.MasterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

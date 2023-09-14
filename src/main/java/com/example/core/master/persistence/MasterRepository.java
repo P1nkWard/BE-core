@@ -1,6 +1,6 @@
-package com.example.core.member.persistence;
+package com.example.core.master.persistence;
 
-import com.example.core.member.domain.Master;
+import com.example.core.master.entity.Master;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MasterRepository extends JpaRepository<Master,String> {

@@ -2,9 +2,9 @@ package com.example.core.service;
 
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
-import com.example.core.member.dto.MasterDto;
-import com.example.core.member.persistence.MasterRepository;
-import com.example.core.member.service.MasterDefaultService;
+import com.example.core.master.dto.MasterDto;
+import com.example.core.master.persistence.MasterRepository;
+import com.example.core.master.service.MasterDefaultService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

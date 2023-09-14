@@ -1,12 +1,13 @@
-package com.example.core.member.dto;
+package com.example.core.master.dto;
 
+import com.example.core.master.entity.Master;
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
-import com.example.core.member.domain.Store;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import com.example.core.store.domain.Store;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,10 +16,19 @@ public class MasterDto{
     private String masterPw;
     private String masterName;
     private String masterEmail;
-    private Store store;
+    private Set<Store> store;
     private Phone phone; // embedded
     private Address address; // embedded
 
+    public MasterDto(Master master){
+        this.masterId = master.getMasterId();
+        this.masterPw = master.getMasterPw();
+        this.masterName = master.getMasterName();
+        this.masterEmail = master.getMasterEmail();
+        this.store = master.getStoreSet();
+        this.phone = master.getMasterPhoneNumber();
+        this.address = master.getMasterAddress();
+    }
     public String getMasterId() {
         return masterId;
     }

@@ -1,6 +1,6 @@
-package com.example.core.member.persistence;
+package com.example.core.store.persistence;
 
-import com.example.core.member.domain.Store;
+import com.example.core.store.domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StoreRepository extends JpaRepository<Store,String> {

@@ -1,9 +1,8 @@
-package com.example.core.member.service;
+package com.example.core.store.service;
 
-import com.example.core.member.domain.Store;
-import com.example.core.member.dto.StoreDto;
+import com.example.core.store.domain.Store;
+import com.example.core.store.dto.StoreDto;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public interface StoreService {

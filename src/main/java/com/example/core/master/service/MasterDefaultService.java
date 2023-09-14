@@ -1,26 +1,22 @@
-package com.example.core.member.service;
+package com.example.core.master.service;
 
-import com.example.core.member.domain.Master;
-import com.example.core.member.domain.Store;
-import com.example.core.member.dto.MasterDto;
-import com.example.core.member.persistence.MasterRepository;
-import com.example.core.member.persistence.StoreRepository;
+import com.example.core.master.entity.Master;
+import com.example.core.store.domain.Store;
+import com.example.core.master.dto.MasterDto;
+import com.example.core.master.persistence.MasterRepository;
+import com.example.core.store.persistence.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class MasterDefaultService implements MasterService<MasterDto> {
+public class MasterDefaultService implements MasterService {
     @Autowired
     MasterRepository masterRepository;
     @Autowired
     StoreRepository storeRepository;
 
-    @Override
-    public void testG(MasterDto t){
-
-    }
     @Override
     public void masterRegister(MasterDto masterDto){
     Optional<Master> master = masterRepository.findById(masterDto.getMasterId());
