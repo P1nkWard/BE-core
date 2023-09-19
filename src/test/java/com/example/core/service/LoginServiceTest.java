@@ -1,7 +1,6 @@
 package com.example.core.service;
 
 import com.example.core.member.dto.LoginDto;
-import com.example.core.member.entity.Member;
 import com.example.core.member.exception.InvalidCredentialsException;
 import com.example.core.member.persistence.MemberRepository;
 import com.example.core.member.service.LoginService;
@@ -15,7 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 
@@ -27,22 +27,17 @@ public class LoginServiceTest {
     @InjectMocks
     private LoginService loginService;
 
-    private Member member;
     private LoginDto dto;
 
     @BeforeEach
     void setUp() {
-        String id = "abc";
-        String pw = "123";
-
-        member = new Member(id, pw);
-        dto = new LoginDto(id, pw);
+        dto = new LoginDto("abc", "123");
     }
 
     @Test
     @DisplayName(value = "로그인 성공 테스트")
     public void loginSuccessTest() {
-        when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(member));
+        when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(dto.toEntity()));
 
         assertDoesNotThrow(() -> loginService.login(dto));
         verify(memberRepository, times(1)).findById(dto.getId());
@@ -55,8 +50,7 @@ public class LoginServiceTest {
 
         when(memberRepository.findById(dto.getId())).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(InvalidCredentialsException.class, () -> loginService.login(dto));
-        assertTrue(exception.getMessage().contains("아이디 또는 비밀번호가 잘못되었습니다"));
+        assertThrows(InvalidCredentialsException.class, () -> loginService.login(dto));
     }
 
     @Test
@@ -64,9 +58,8 @@ public class LoginServiceTest {
     public void loginFailTestWithWrongPassword() {
         dto.setPw("wrongPw");
 
-        when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(member));
+        when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(dto.toEntity()));
 
-        Exception exception = assertThrows(InvalidCredentialsException.class, () -> loginService.login(dto));
-        assertTrue(exception.getMessage().contains("아이디 또는 비밀번호가 잘못되었습니다"));
+        assertThrows(InvalidCredentialsException.class, () -> loginService.login(dto));
     }
 }

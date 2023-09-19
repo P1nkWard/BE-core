@@ -25,15 +25,15 @@ public class MemberServicePractice implements ServiceCRUD<MemberDto>{
 
 //        memberRepository.save(Member.fromDto(memberDt o));
 //        이거 빨간줄 생겨서 일단 주석처리함 RegisterDto 처리 어떻게 할지
-        memberRepository.save(new Member(memberDto));
+//        memberRepository.save(new Member(memberDto));
         // 이 코드로 바꿈
         return memberDto;
     }
     public MemberDto modify(MemberDto memberDto){
         Optional<Member> modifyMember = memberRepository.findById(memberDto.getId());
         if(modifyMember.isPresent()){
-            Member updateMember = new Member(memberDto);
-            memberRepository.save(updateMember);
+//            Member updateMember = new Member(memberDto);
+//            memberRepository.save(updateMember);
             return memberDto;
         }else{
             throw new NotFoundMemberException("수정하실 멤버가 없습니다.");
@@ -49,8 +49,9 @@ public class MemberServicePractice implements ServiceCRUD<MemberDto>{
             throw new NotFoundMemberException("삭제하실 멤버가 없습니다.");
         }
     }
-    public void MemberDto find(MemberDto memberDto){
+
+    public MemberDto find(MemberDto memberDto){
         // search랑 무슨차이일까 ? 채워넣기
-//        return memberDto;
+        return memberDto;
     }
 }

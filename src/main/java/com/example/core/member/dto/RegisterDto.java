@@ -2,6 +2,7 @@ package com.example.core.member.dto;
 
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
+import com.example.core.member.entity.Member;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,11 +27,13 @@ public class RegisterDto {
     @Email
     private String email;
 
-    @NotBlank
     @Valid
     private Phone phone;
 
-    @NotBlank
     @Valid
     private Address address;
+
+    public Member toEntity() {
+        return new Member(id, pw, name, email, phone, address, null);
+    }
 }

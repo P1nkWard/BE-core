@@ -3,8 +3,10 @@ package com.example.core.member.service;
 import com.example.core.member.dto.MemberDto;
 import com.example.core.member.dto.MemberSearchSpecRequest;
 import com.example.core.member.dto.RegisterDto;
+import com.example.core.member.dto.UpdateDto;
 import com.example.core.member.entity.Member;
 import com.example.core.member.exception.MemberAlreadyExistsException;
+import com.example.core.member.exception.NotFoundMemberException;
 import com.example.core.member.persistence.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,16 +26,37 @@ public class MemberService {
     public void register(RegisterDto dto) {
         Optional<Member> member = memberRepository.findById(dto.getId());
 
-        member.ifPresent(m -> {
+        if (member.isPresent())
             throw new MemberAlreadyExistsException("이미 존재하는 아이디입니다");
-        });
 
-        memberRepository.save(Member.fromDto(dto));
+        memberRepository.save(dto.toEntity());
     }
 
-    public List<MemberDto> search(MemberSearchSpecRequest searchSpec) {
+    public List<MemberDto> findList(MemberSearchSpecRequest searchSpec) {
         List<Member> memberList = memberRepository.findBySearchSpec(searchSpec);
 
-        return memberList.stream().map(MemberDto::new).toList();
+        if (memberList.isEmpty())
+            throw new NotFoundMemberException("검색 조건에 해당하는 회원을 찾을 수 없습니다");
+
+        return memberList.stream().map(Member::toMemberDto).toList();
+    }
+
+    public void update(UpdateDto dto) {
+        Optional<Member> member = memberRepository.findById(dto.getId());
+
+        if (member.isEmpty())
+            throw new NotFoundMemberException("수정할 회원을 찾을 수 없습니다");
+
+        memberRepository.save(dto.toEntity());
+    }
+
+    public void delete(String id) {
+        Optional<Member> member = memberRepository.findById(id);
+
+
+        if (member.isEmpty())
+            throw new NotFoundMemberException("삭제할 회원을 찾을 수 없습니다");
+
+        memberRepository.delete(member.get());
     }
 }

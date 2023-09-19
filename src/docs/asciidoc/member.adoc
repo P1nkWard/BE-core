@@ -1,33 +1,26 @@
-[[Member]]
-== Member
+= Member API
+:toc:
 
-=== Login(로그인)
-==== 로그인 성공
+== Register(회원가입)
+=== 회원가입 성공
+operation::member-controller-test/register-success-test[snippets='http-request,http-response']
+
+=== 회원가입 실패 - 이미 존재하는 아이디
+operation::member-controller-test/register-fail-test-with-existing-id[snippets='http-request,http-response']
+
+=== 회원가입 실패 - 유효하지 않은 입력값
+입력값에 빈 문자열 또는 null 값이 들어갈 경우
+
+operation::member-controller-test/register-fail-test-with-invalid-input[snippets='http-request,http-response']
+
+== Login(로그인)
+=== 로그인 성공
 operation::member-controller-test/login-success-test[snippets='http-request,http-response']
 
-==== 로그인 실패
-operation::member-controller-test/login-success-test[snippets='http-request,http-response']
+=== 로그인 실패 - 잘못된 아이디 또는 비밀번호
+operation::member-controller-test/login-fail-test-with-wrong-id-or-pw[snippets='http-request,http-response']
 
+=== 로그인 실패 - 유효하지 않은 입력값
+입력값에 빈 문자열 또는 null 값이 들어갈 경우
 
-=== Find Member Id(회원 id 찾기)
-operation::member-controller-test/find-member-id-test[snippets='http-request,http-response']
-
-
-=== Find Member Pw(회원 pw 찾기)
-operation::member-controller-test/find-member-pw-test[snippets='http-request,http-response']
-
-
-=== Register Member(회원 등록)
-operation::member-controller-test/register-member-test[snippets='http-request,http-response']
-
-
-=== Modify Member(회원 수정)
-operation::member-controller-test/modify-member-test[snippets='http-request,http-response']
-
-
-=== Delete Member(회원 삭제)
-operation::member-controller-test/delete-member-test[snippets='http-request,http-response']
-
-
-=== Check Member(회원 조회)
-operation::member-controller-test/check-member-test[snippets='http-request,http-response']
+operation::member-controller-test/login-fail-test-with-invalid-input[snippets='http-request,http-response']

@@ -7,7 +7,7 @@
 :sectlinks:
 
 [[Example]]
-== Example
+= Example
 * 사용하는 방법을 적어놓습니다.
 
 =, ==, === 은 각각 h1,h2,h3의 대응이 됩니다. +
@@ -17,4 +17,6 @@ adocs파일을 만드는 방법은 src/docs/asciidoc/example.adoc파일에 명�
 
 [source,http,options="nowrap",title="Request"]
 include::example.adoc[]
+
+[source,http,options="nowrap",title="Request"]
 include::member.adoc[]

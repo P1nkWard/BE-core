@@ -30,31 +30,11 @@ public class Member {
     private Address address;
     private LocalDate createDate;
 
-    public Member(String id, String pw) {
-        this.id = id;
-        this.pw = pw;
+    public MemberDto toMemberDto() {
+        return new MemberDto(id, pw, name, email, phone, address, createDate);
     }
 
-    public Member(MemberDto dto) {
-        this.id = dto.getId();
-        this.pw = dto.getPw();
-        this.name = dto.getName();
-        this.email = dto.getEmail();
-        this.phone = dto.getPhone();
-        this.address = dto.getAddress();
-        this.createDate = dto.getCreateDate();
-    }
-
-    public static Member fromDto(RegisterDto dto) {
-        Member member = new Member();
-
-        member.id = dto.getId();
-        member.pw = dto.getPw();
-        member.name = dto.getName();
-        member.email = dto.getEmail();
-        member.phone = dto.getPhone();
-        member.address = dto.getAddress();
-
-        return member;
+    public RegisterDto toRegisterDto() {
+        return new RegisterDto(id, pw, name, email, phone, address);
     }
 }

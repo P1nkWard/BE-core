@@ -61,13 +61,13 @@ public class MasterDto{
         this.masterEmail = masterEmail;
     }
 
-    public Store getStore() {
-        return store;
-    }
-
-    public void setStore(Store store) {
-        this.store = store;
-    }
+//    public Store getStore() {
+//        return store;
+//    }
+//
+//    public void setStore(Store store) {
+//        this.store = store;
+//    }
 
     public Phone getPhone() {
         return phone;

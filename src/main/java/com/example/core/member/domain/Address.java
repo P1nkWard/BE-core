@@ -17,6 +17,7 @@ public class Address {
     private String street;
     @NotBlank
     private String detail;
+
     public Address(String city, String street, String detail) {
         this.city = city;
         this.street = street;
