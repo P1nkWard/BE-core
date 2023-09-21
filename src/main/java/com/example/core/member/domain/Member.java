@@ -1,9 +1,9 @@
-package com.example.core.member.entity;
+package com.example.core.member.domain;
 
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
-import com.example.core.member.dto.MemberDto;
-import com.example.core.member.dto.RegisterDto;
+import com.example.core.member.controller.dto.MemberDto;
+import com.example.core.member.controller.dto.RegisterDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

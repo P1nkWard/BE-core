@@ -1,7 +1,7 @@
 package com.example.core.member.service;
 
-import com.example.core.member.dto.LoginDto;
-import com.example.core.member.entity.Member;
+import com.example.core.member.controller.dto.LoginDto;
+import com.example.core.member.domain.Member;
 import com.example.core.member.exception.InvalidCredentialsException;
 import com.example.core.member.persistence.MemberRepository;
 import org.springframework.stereotype.Service;

@@ -2,10 +2,10 @@ package com.example.core.service;
 
 import com.example.core.member.domain.Address;
 import com.example.core.member.domain.Phone;
-import com.example.core.member.dto.MemberDto;
-import com.example.core.member.dto.MemberSearchSpecRequest;
-import com.example.core.member.dto.RegisterDto;
-import com.example.core.member.entity.Member;
+import com.example.core.member.controller.dto.MemberDto;
+import com.example.core.member.controller.dto.MemberSearchSpecRequest;
+import com.example.core.member.controller.dto.RegisterDto;
+import com.example.core.member.domain.Member;
 import com.example.core.member.exception.MemberAlreadyExistsException;
 import com.example.core.member.exception.NotFoundMemberException;
 import com.example.core.member.persistence.MemberRepository;

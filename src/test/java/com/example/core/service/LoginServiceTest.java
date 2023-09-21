@@ -1,6 +1,6 @@
 package com.example.core.service;
 
-import com.example.core.member.dto.LoginDto;
+import com.example.core.member.controller.dto.LoginDto;
 import com.example.core.member.exception.InvalidCredentialsException;
 import com.example.core.member.persistence.MemberRepository;
 import com.example.core.member.service.LoginService;
