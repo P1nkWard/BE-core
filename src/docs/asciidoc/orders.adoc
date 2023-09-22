@@ -1,0 +1,29 @@
+= Member API
+:toc: left
+
+
+== 주문 생성
+---
+주문 생성 #Response# 에러코드
+|===
+|Code | 설명
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|===
+
+
+
+
+
+=== Request
+`url: /api/orders`
+`method: POST`
+include::{snippets}/order-processing-api-test/주문_생성/request-body.adoc[]
+=== 성공_응답
+include::{snippets}/order-processing-api-test/주문_생성/response-body.adoc[]
