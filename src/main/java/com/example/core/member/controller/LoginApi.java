@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("members")
 @RequiredArgsConstructor
 public class LoginApi {
     private static String HEADER_REFERER = "referer";
-    private LoginService loginService;
+    private final LoginService loginService;
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto dto, @RequestHeader(name = "referer") String referer) {
         HttpHeaders httpHeaders = new HttpHeaders();

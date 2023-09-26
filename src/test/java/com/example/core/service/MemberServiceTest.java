@@ -1,11 +1,12 @@
 package com.example.core.service;
 
-import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Phone;
+import com.example.core.member.domain.vo.Address;
+import com.example.core.member.domain.vo.MemberSearchSpec;
+import com.example.core.member.domain.vo.Phone;
 import com.example.core.member.controller.dto.MemberDto;
 import com.example.core.member.controller.dto.MemberSearchSpecRequest;
 import com.example.core.member.controller.dto.RegisterDto;
-import com.example.core.member.domain.Member;
+import com.example.core.member.domain.entity.Member;
 import com.example.core.member.exception.MemberAlreadyExistsException;
 import com.example.core.member.exception.NotFoundMemberException;
 import com.example.core.member.persistence.MemberRepository;
@@ -65,23 +66,25 @@ public class MemberServiceTest {
     @Test
     @DisplayName(value = "회원 조회 성공 테스트")
     public void findListSuccessTest() {
-        MemberSearchSpecRequest searchSpec = new MemberSearchSpecRequest();
-        searchSpec.setName("myName");
+        MemberSearchSpecRequest searchSpecRequest = new MemberSearchSpecRequest();
+        searchSpecRequest.setName("myName");
+        MemberSearchSpec searchSpec = memberService.convertDtoToDomain(searchSpecRequest);
 
         when(memberRepository.findBySearchSpec(searchSpec)).thenReturn(List.of(member));
 
-        List<MemberDto> dtos = memberService.findList(searchSpec);
+        List<MemberDto> dtos = memberService.findList(searchSpecRequest);
         assertEquals(List.of(member.toMemberDto()), dtos);
     }
 
     @Test
     @DisplayName(value = "회원 조회 실패 테스트")
     public void findListFailTest() {
-        MemberSearchSpecRequest searchSpec = new MemberSearchSpecRequest();
-        searchSpec.setName("myName");
+        MemberSearchSpecRequest searchSpecRequest = new MemberSearchSpecRequest();
+        searchSpecRequest.setName("myName");
+        MemberSearchSpec searchSpec = memberService.convertDtoToDomain(searchSpecRequest);
 
         when(memberRepository.findBySearchSpec(searchSpec)).thenReturn(List.of());
 
-        assertThrows(NotFoundMemberException.class, () -> memberService.findList(searchSpec));
+        assertThrows(NotFoundMemberException.class, () -> memberService.findList(searchSpecRequest));
     }
 }

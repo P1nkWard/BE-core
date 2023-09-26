@@ -56,9 +56,9 @@ public class LoginServiceTest {
     @Test
     @DisplayName(value = "로그인 실패 테스트 - 비밀번호 불일치")
     public void loginFailTestWithWrongPassword() {
-        dto.setPw("wrongPw");
-
         when(memberRepository.findById(dto.getId())).thenReturn(Optional.of(dto.toEntity()));
+
+        dto.setPw("wrongPw");
 
         assertThrows(InvalidCredentialsException.class, () -> loginService.login(dto));
     }

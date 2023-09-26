@@ -1,10 +1,8 @@
 package com.example.core.member.controller;
 
-import com.example.core.member.controller.dto.LoginDto;
 import com.example.core.member.controller.dto.MemberDto;
 import com.example.core.member.controller.dto.MemberSearchSpecRequest;
 import com.example.core.member.controller.dto.RegisterDto;
-import com.example.core.member.service.LoginService;
 import com.example.core.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
     private static String HEADER_REFERER = "referer";
-
     private final MemberService memberService;
-
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@Valid @RequestBody RegisterDto dto, @RequestHeader(name = "referer") String referer) {
@@ -39,8 +35,6 @@ public class MemberController {
 
         return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(responseBody);
     }
-
-
 
     @GetMapping
     public ResponseEntity<List<MemberDto>> findList(@ModelAttribute MemberSearchSpecRequest searchSpec) {

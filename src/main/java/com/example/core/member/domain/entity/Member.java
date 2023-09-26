@@ -1,9 +1,9 @@
-package com.example.core.member.domain;
+package com.example.core.member.domain.entity;
 
-import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Phone;
 import com.example.core.member.controller.dto.MemberDto;
 import com.example.core.member.controller.dto.RegisterDto;
+import com.example.core.member.domain.vo.Address;
+import com.example.core.member.domain.vo.Phone;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +29,16 @@ public class Member {
     @Embedded
     private Address address;
     private LocalDate createDate;
+
+    public void update(Member member) {
+        this.id = member.getId();
+        this.pw = member.getPw();
+        this.name = member.getName();
+        this.email = member.getEmail();
+        this.phone = member.getPhone();
+        this.address = member.getAddress();
+        this.createDate = member.getCreateDate();
+    }
 
     public MemberDto toMemberDto() {
         return new MemberDto(id, pw, name, email, phone, address, createDate);

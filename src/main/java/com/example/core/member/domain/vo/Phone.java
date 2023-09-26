@@ -1,4 +1,4 @@
-package com.example.core.member.domain;
+package com.example.core.member.domain.vo;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;

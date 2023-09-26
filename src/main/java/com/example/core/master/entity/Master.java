@@ -1,7 +1,7 @@
 package com.example.core.master.entity;
 
-import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Phone;
+import com.example.core.member.domain.vo.Address;
+import com.example.core.member.domain.vo.Phone;
 import com.example.core.store.domain.Store;
 import com.example.core.master.dto.MasterDto;
 import jakarta.persistence.Embedded;

@@ -1,7 +1,7 @@
 package com.example.core.service;
 
-import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Phone;
+import com.example.core.member.domain.vo.Address;
+import com.example.core.member.domain.vo.Phone;
 import com.example.core.master.dto.MasterDto;
 import com.example.core.master.persistence.MasterRepository;
 import com.example.core.master.service.MasterDefaultService;

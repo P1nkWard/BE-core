@@ -1,7 +1,7 @@
 package com.example.core.member.service;
 
 import com.example.core.member.controller.dto.MemberDto;
-import com.example.core.member.domain.Member;
+import com.example.core.member.domain.entity.Member;
 import com.example.core.member.exception.MemberAlreadyExistsException;
 import com.example.core.member.exception.NotFoundMemberException;
 import com.example.core.member.persistence.MemberRepository;

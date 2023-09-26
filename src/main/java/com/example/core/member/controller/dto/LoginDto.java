@@ -1,6 +1,6 @@
 package com.example.core.member.controller.dto;
 
-import com.example.core.member.domain.Member;
+import com.example.core.member.domain.entity.Member;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

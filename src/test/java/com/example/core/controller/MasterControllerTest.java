@@ -1,8 +1,8 @@
 package com.example.core.controller;
 
 import com.example.core.master.controller.MasterController;
-import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Phone;
+import com.example.core.member.domain.vo.Address;
+import com.example.core.member.domain.vo.Phone;
 import com.example.core.master.dto.MasterDto;
 import com.example.core.master.service.MasterService;
 import com.fasterxml.jackson.databind.ObjectMapper;

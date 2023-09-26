@@ -1,8 +1,8 @@
 package com.example.core.member.controller.dto;
 
-import com.example.core.member.domain.Address;
-import com.example.core.member.domain.Phone;
-import com.example.core.member.domain.Member;
+import com.example.core.member.domain.vo.Address;
+import com.example.core.member.domain.vo.Phone;
+import com.example.core.member.domain.entity.Member;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

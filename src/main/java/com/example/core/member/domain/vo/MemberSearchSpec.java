@@ -1,17 +1,17 @@
-package com.example.core.member.controller.dto;
+package com.example.core.member.domain.vo;
 
-import com.example.core.member.domain.vo.Address;
-import com.example.core.member.domain.vo.Phone;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberSearchSpecRequest {
+@EqualsAndHashCode
+public class MemberSearchSpec {
     private String id;
     private String pw;
     private String name;
